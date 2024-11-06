@@ -3,7 +3,7 @@ import MainBoard from "../main-board/MainBoard";
 
 const HomePage = () => {
   return (
-    <div  >
+    <div className="flex  items-center min-h-screen">
       <MainBoard />
     </div>
   );

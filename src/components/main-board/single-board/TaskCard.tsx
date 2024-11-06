@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import Image from "next/image";
@@ -9,11 +10,15 @@ import { GrAttachment } from "react-icons/gr";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "../../ui/dialog";
 import FileUpload from "./file-upload/FileUpload";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+
+const userImage1 = "/images/user1.jpg";
+const userImage2 = "/images/user2.webp";
 
 const TaskCard = () => {
   const [viewModalOpen, setViewModalOpen] = useState(false);
@@ -22,6 +27,31 @@ const TaskCard = () => {
     setViewModalOpen(true);
   };
 
+  const getFolderDetails = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/folder-details`
+      );
+      console.log("Folder Details Response:", response.data);
+      return response?.data || {};
+    } catch (error) {
+      console.log("Error fetching folder details:", error);
+      return {};
+    }
+  };
+
+  const {
+    isLoading,
+    isError,
+    data: folderDetailsData = {},
+    refetch,
+  } = useQuery({
+    queryKey: ["folderDetailsData"],
+    queryFn: getFolderDetails,
+  });
+
+  console.log(folderDetailsData);
+
   return (
     <div className="flex flex-col gap-6 border w-full p-3 rounded-lg bg-white">
       {/* users here  */}
@@ -29,10 +59,10 @@ const TaskCard = () => {
         <div className="flex items-center gap-2 font-semibold text-sm">
           <div>
             <Image
-              src={`https://placehold.co/200x200`}
+              src={userImage1}
               height={100}
               width={100}
-              className="h-8 w-8 rounded-full "
+              className="h-8 w-8 rounded-full  object-cover"
               alt="image"
             />
           </div>
@@ -41,10 +71,10 @@ const TaskCard = () => {
         <div className="flex items-center gap-2 font-semibold text-sm">
           <div>
             <Image
-              src={`https://placehold.co/200x200`}
+              src={userImage2}
               height={100}
               width={100}
-              className="h-8 w-8 rounded-full "
+              className="h-8 w-8 rounded-full  object-cover"
               alt="image"
             />
           </div>
@@ -73,10 +103,10 @@ const TaskCard = () => {
         <div className="flex items-center gap-2 font-semibold text-sm">
           <div>
             <Image
-              src={`https://placehold.co/200x200`}
+              src={userImage1}
               height={100}
               width={100}
-              className="h-8 w-8 rounded-full "
+              className="h-8 w-8 rounded-full  object-cover"
               alt="image"
             />
           </div>
@@ -91,7 +121,7 @@ const TaskCard = () => {
             className="flex gap-1 items-center hover:bg-slate-200 p-1 rounded transition-all duration-400 "
           >
             <GrAttachment />
-            25
+            <span> {folderDetailsData?.numberOfFiles} </span>
           </button>
 
           <Dialog open={viewModalOpen} onOpenChange={setViewModalOpen}>
@@ -99,7 +129,10 @@ const TaskCard = () => {
               <DialogHeader>
                 <DialogTitle>Upload your file</DialogTitle>
               </DialogHeader>
-              <FileUpload />
+              <FileUpload
+                setViewModalOpen={setViewModalOpen}
+                refetch={refetch}
+               />
             </DialogContent>
           </Dialog>
         </div>
