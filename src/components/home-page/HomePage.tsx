@@ -3,7 +3,7 @@ import MainBoard from "../main-board/MainBoard";
 
 const HomePage = () => {
   return (
-    <div>
+    <div  >
       <MainBoard />
     </div>
   );

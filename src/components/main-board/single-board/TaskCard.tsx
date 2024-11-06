@@ -1,11 +1,27 @@
+"use client";
+
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import { BsStack } from "react-icons/bs";
 import { FaCalendarAlt, FaComments } from "react-icons/fa";
 import { FaRegCalendarDays } from "react-icons/fa6";
 import { GrAttachment } from "react-icons/gr";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "../../ui/dialog";
+import FileUpload from "./file-upload/FileUpload";
 
 const TaskCard = () => {
+  const [viewModalOpen, setViewModalOpen] = useState(false);
+
+  const handleView = () => {
+    setViewModalOpen(true);
+  };
+
   return (
     <div className="flex flex-col gap-6 border w-full p-3 rounded-lg bg-white">
       {/* users here  */}
@@ -53,7 +69,7 @@ const TaskCard = () => {
       </div>
 
       {/* card footer  */}
-      <div className="flex justify-between items-center font-semibold">
+      <div className="flex justify-between items-center font-semibold text-sm">
         <div className="flex items-center gap-2 font-semibold text-sm">
           <div>
             <Image
@@ -66,14 +82,28 @@ const TaskCard = () => {
           </div>
         </div>
         <div>12+</div>
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-1 items-center">
           <FaComments /> 15
         </div>
-        <div className="flex gap-2 items-center">
-          <GrAttachment />
-          25
+        <div>
+          <button
+            onClick={() => handleView()}
+            className="flex gap-1 items-center hover:bg-slate-200 p-1 rounded transition-all duration-400 "
+          >
+            <GrAttachment />
+            25
+          </button>
+
+          <Dialog open={viewModalOpen} onOpenChange={setViewModalOpen}>
+            <DialogContent className="">
+              <DialogHeader>
+                <DialogTitle>Upload your file</DialogTitle>
+              </DialogHeader>
+              <FileUpload />
+            </DialogContent>
+          </Dialog>
         </div>
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-1 items-center">
           <FaRegCalendarDays /> 25-10-1998
         </div>
       </div>
