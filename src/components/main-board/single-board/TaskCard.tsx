@@ -30,7 +30,7 @@ const TaskCard = () => {
   const getFolderDetails = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/folder-details`
+        `https://trello-clone-backend-4uuy.onrender.com/api/folder-details`
       );
       console.log("Folder Details Response:", response.data);
       return response?.data || {};

@@ -33,7 +33,7 @@ const FileUpload = ({ setViewModalOpen, refetch }: IFileUploadProps) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/upload", // Backend API endpoint
+        "https://trello-clone-backend-4uuy.onrender.com/api/upload", // Backend API endpoint
         formData,
         {
           headers: {
